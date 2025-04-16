@@ -1,59 +1,77 @@
-# RadioitaliacastFrontend
+RadioItaliaCast Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.5.
+A sleek Angular app to stream live Italian radio stations from across the country — with station logos, modern UI, and Docker-ready deployment.
 
-## Development server
+🚀 Features
 
-To start a local development server, run:
+Live streaming of multiple Italian radio stations
 
-```bash
+Modern UI with Bootstrap
+
+Logos, play/pause buttons, responsive layout
+
+Now Playing banner
+
+Backend integration with Express API
+
+Full Docker + Docker Compose setup
+
+Ready for CI/CD and EC2 deployment
+
+⚙️ Environment Configuration
+
+In src/environments/environment.ts:
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:3000/api'
+};
+
+In production (create environment.prod.ts):
+export const environment = {
+  production: true,
+  apiUrl: 'http://13.58.141.188:3000/api'
+};
+
+🖥️ Local Development
+npm install
 ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+🐳 Dockerized Deployment
 
-## Code scaffolding
+Dockerfile Highlights
+Multi-stage build: Angular (Node 23 Alpine Slim)
+Static file serving: Nginx 1.27.4 Alpine Slim
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Build the Image
+docker build -t radioitaliacast-frontend .
 
-```bash
-ng generate component component-name
-```
+Run Locally
+docker run -d -p 4200:80 radioitaliacast-frontend
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+📦 Docker Compose Setup
+Works with the backend API to run both containers together:
+docker-compose up -d
 
-```bash
-ng generate --help
-```
+🧪 Future Enhancements
 
-## Building
+Station search/filter
 
-To build the project run:
+Volume slider
 
-```bash
-ng build
-```
+Local favorites
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Animated card UI
 
-## Running unit tests
+PWA support
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+📸 Preview
 
-```bash
-ng test
-```
+👉 Visit the live demo: http://13.58.141.188:4300
 
-## Running end-to-end tests
+(Hosted on AWS EC2 with Docker)
 
-For end-to-end (e2e) testing, run:
+👨‍💻 Author
 
-```bash
-ng e2e
-```
+Valerio Porcelli GitHub: @vpstackhub
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+🎯 This project is part of my Full Stack Developer journey — proudly coded, dockerized, and deployed from scratch!

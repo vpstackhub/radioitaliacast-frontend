@@ -1,0 +1,15 @@
+<div class="card">
+  <img
+  [src]="logoSrc"
+  alt="{{ station.name }}"
+  class="logo"
+  (error)="onLogoError()"
+/>
+
+    <h3>{{ station.name }}</h3>
+    <p>{{ station.region }}</p>
+    <button (click)="togglePlay()">
+      {{ isPlaying ? 'Pause' : 'Play' }}
+    </button>
+  </div>
+  

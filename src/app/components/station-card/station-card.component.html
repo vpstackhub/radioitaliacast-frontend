@@ -1,15 +1,37 @@
-<div class="card">
-  <img
-  [src]="logoSrc"
-  alt="{{ station.name }}"
-  class="logo"
-  (error)="onLogoError()"
-/>
+<div class="station-card">
+  <img class="logo" [src]="logoSrc" (error)="onLogoError()" alt="Station Logo" />
 
-    <h3>{{ station.name }}</h3>
-    <p>{{ station.region }}</p>
-    <button (click)="togglePlay()">
-      {{ isPlaying ? 'Pause' : 'Play' }}
-    </button>
+  <div class="toggle-wrapper" (click)="toggleSwitch()">
+    <div class="toggle-base">
+      <div class="toggle-switch" [class.toggled]="isToggled"></div>
+    </div>
   </div>
+
+  <div class="screws">
+    <div class="screw"></div>
+    <div class="screw"></div>
+    <div class="screw"></div>
+    <div class="screw"></div>
+  </div>
+
+  <h3>{{ station.name }}</h3>
+
+  <button class="audio-knob" (click)="togglePlay()">
+    {{ isPlaying ? '❚❚' : '▶' }}
+  </button>
+
+  <div class="volume-container">
+    <label for="volume">Volume</label>
+    <input
+      id="volume"
+      type="range"
+      min="0"
+      max="1"
+      step="0.01"
+      [(ngModel)]="volume"
+      (input)="adjustVolume()"
+    />
+  </div>
+</div>
+
   

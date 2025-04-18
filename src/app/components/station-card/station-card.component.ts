@@ -1,19 +1,24 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+
 
 @Component({
   selector: 'app-station-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './station-card.component.html',
   styleUrls: ['./station-card.component.css']
 })
 export class StationCardComponent implements OnInit {
   @Input() station: any;
   @Output() playEvent = new EventEmitter<string>(); 
+
   audio: HTMLAudioElement | null = null;
   isPlaying = false;
   logoSrc: string = '';
+  isToggled = false;  
 
   ngOnInit(): void {
     this.logoSrc = this.station.logo;
@@ -22,6 +27,7 @@ export class StationCardComponent implements OnInit {
   togglePlay() {
     if (!this.audio) {
       this.audio = new Audio(this.station.streamUrl);
+      this.audio.volume = this.volume;
     }
 
     if (this.isPlaying) {
@@ -34,6 +40,16 @@ export class StationCardComponent implements OnInit {
     this.isPlaying = !this.isPlaying;
   }
 
+  toggleSwitch() {
+    this.isToggled = !this.isToggled;
+  }
+  volume = 0.5;
+
+adjustVolume() {
+  if (this.audio) {
+    this.audio.volume = this.volume;
+  }
+}
   onLogoError(): void {
     switch (this.station.name) {
       case 'Radio Italia':

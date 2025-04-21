@@ -45,6 +45,10 @@ export class StationCardComponent implements OnInit {
   }
   volume = 0.5;
 
+  randomLevel(): number {
+    return Math.floor(Math.random() * 70); // simulate bounce
+  }  
+
 adjustVolume() {
   if (this.audio) {
     this.audio.volume = this.volume;

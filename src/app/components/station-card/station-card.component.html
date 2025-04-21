@@ -1,8 +1,8 @@
 <div class="station-card">
   <img class="logo" [src]="logoSrc" (error)="onLogoError()" alt="Station Logo" />
   <div class="vu-meter">
-    <div class="vu-bar left" [style.height.%]="isPlaying ? 30 + randomLevel() : 0"></div>
-    <div class="vu-bar right" [style.height.%]="isPlaying ? 30 + randomLevel() : 0"></div>
+    <div class="vu-bar left" [style.height.%]="isPlaying ? vuLevelLeft : 0"></div>
+    <div class="vu-bar right" [style.height.%]="isPlaying ? vuLevelRight : 0"></div>
   </div>
   
   <div class="toggle-wrapper" (click)="toggleSwitch()">

@@ -1,8 +1,6 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-
 
 @Component({
   selector: 'app-station-card',
@@ -11,18 +9,27 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './station-card.component.html',
   styleUrls: ['./station-card.component.css']
 })
-export class StationCardComponent implements OnInit {
+export class StationCardComponent implements OnInit, OnDestroy {
   @Input() station: any;
-  @Output() playEvent = new EventEmitter<string>(); 
+  @Output() playEvent = new EventEmitter<string>();
 
   audio: HTMLAudioElement | null = null;
   isPlaying = false;
   logoSrc: string = '';
-  isToggled = false;  
+  isToggled = false;
+  volume = 0.5;
+
+  vuLevelLeft: number = 0;
+  vuLevelRight: number = 0;
+  vuInterval: any;
 
   ngOnInit(): void {
     this.logoSrc = this.station.logo || 'https://via.placeholder.com/150?text=No+Logo';
-  }  
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.vuInterval);
+  }
 
   togglePlay() {
     if (!this.audio) {
@@ -32,28 +39,34 @@ export class StationCardComponent implements OnInit {
 
     if (this.isPlaying) {
       this.audio.pause();
+      clearInterval(this.vuInterval);
     } else {
       this.audio.play();
-      this.playEvent.emit(this.station.name); 
+      this.playEvent.emit(this.station.name);
+
+      this.vuInterval = setInterval(() => {
+        this.generateVuLevels();
+      }, 200);
     }
 
     this.isPlaying = !this.isPlaying;
   }
 
+  generateVuLevels() {
+    this.vuLevelLeft = Math.floor(30 + Math.random() * 70);
+    this.vuLevelRight = Math.floor(30 + Math.random() * 70);
+  }
+
   toggleSwitch() {
     this.isToggled = !this.isToggled;
   }
-  volume = 0.5;
 
-  randomLevel(): number {
-    return Math.floor(Math.random() * 70); // simulate bounce
-  }  
-
-adjustVolume() {
-  if (this.audio) {
-    this.audio.volume = this.volume;
+  adjustVolume() {
+    if (this.audio) {
+      this.audio.volume = this.volume;
+    }
   }
-}
+
   onLogoError(): void {
     switch (this.station.name) {
       case 'Radio Italia':
@@ -76,5 +89,6 @@ adjustVolume() {
     }
   }
 }
+
 
 

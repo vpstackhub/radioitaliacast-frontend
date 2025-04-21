@@ -21,8 +21,8 @@ export class StationCardComponent implements OnInit {
   isToggled = false;  
 
   ngOnInit(): void {
-    this.logoSrc = this.station.logo;
-  }
+    this.logoSrc = this.station.logo || 'https://via.placeholder.com/150?text=No+Logo';
+  }  
 
   togglePlay() {
     if (!this.audio) {
@@ -53,19 +53,19 @@ adjustVolume() {
   onLogoError(): void {
     switch (this.station.name) {
       case 'Radio Italia':
-        this.logoSrc = 'https://www.radioitalia.it/apple-touch-icon.png';
+        this.logoSrc = 'https://th.bing.com/th/id/OIP.bV39zibs5JCc2YHqQcr2fgHaEw?w=312&h=200&c=8&rs=1&qlt=90&r=0&o=6&dpr=1.5&pid=3.1&rm=2';
         break;
       case 'RTL 102.5':
-        this.logoSrc = 'https://www.rtl.it/static/logos/rtl_logo_512.png';
+        this.logoSrc = 'https://th.bing.com/th/id/OIP.G9bScaxMOelIzA0geu940AHaHa?w=250&h=250&c=8&rs=1&qlt=90&r=0&o=6&dpr=1.5&pid=3.1&rm=2';
         break;
       case 'Radio 105':
-        this.logoSrc = 'https://www.105.net/res/img/logo-105.png';
+        this.logoSrc = 'https://th.bing.com/th/id/OIP.dTcT_S2yRGBeGNnwEUA40gAAAA?w=245&h=254&c=8&rs=1&qlt=90&r=0&o=6&dpr=1.5&pid=3.1&rm=2';
         break;
       case 'Radio Kiss Kiss':
-        this.logoSrc = 'https://www.kisskiss.it/wp-content/uploads/2021/11/favicon.png';
+        this.logoSrc = 'https://th.bing.com/th/id/OIP.KekJjU7kc2uXfUlXa_R9EwHaF3?w=280&h=222&c=8&rs=1&qlt=90&r=0&o=6&dpr=1.5&pid=3.1&rm=2';
         break;
       case 'Rai Radio 1':
-        this.logoSrc = 'https://upload.wikimedia.org/wikipedia/commons/4/4f/RaiRadio1-logo.png';
+        this.logoSrc = 'https://th.bing.com/th/id/OIP.wfIFmhn35RYXjeLq499otgHaCi?w=350&h=120&c=8&rs=1&qlt=90&r=0&o=6&dpr=1.5&pid=3.1&rm=2';
         break;
       default:
         this.logoSrc = 'https://via.placeholder.com/150?text=No+Logo';

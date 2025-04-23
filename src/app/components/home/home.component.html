@@ -21,21 +21,19 @@
   </div>
 </div>
 
-  
-  <div *ngIf="nowPlaying" class="alert alert-success mt-4">
-    ▶️ Now Playing: {{ nowPlaying }}
-  </div>
+<div *ngIf="nowPlaying" class="alert alert-success mt-4">
+  ▶️ Now Playing: {{ nowPlaying }}
+</div>
 
-  <div class="row mt-4">
-    <div
-      class="col-sm-6 col-md-4 col-lg-3 mb-4"
-      *ngFor="let station of stations"
-    >
-      <app-station-card
-        [station]="station"
-        (playEvent)="updateNowPlaying($event)"
-      ></app-station-card>
-    </div>
+<div class="row mt-4">
+  <div
+    class="col-sm-6 col-md-4 col-lg-3 mb-4"
+    *ngFor="let station of stations"
+  >
+    <app-station-card
+      [station]="station"
+      (playEvent)="updateNowPlaying($event)"
+    ></app-station-card>
   </div>
 </div>
 

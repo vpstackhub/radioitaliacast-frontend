@@ -1,7 +1,14 @@
 <div class="container">
-  <h1 class="text-white mb-2">RadioItaliaCast</h1>
-  <p style="opacity: 0.8;">Stream live Italian radio – wherever you are 🎧</p>
-
+  <div class="text-center text-white mt-5">
+    <h1 style="font-size: 3rem; font-weight: bold;">
+      🎙️ Welcome to RadioItaliaCast
+    </h1>
+    <p style="font-size: 1.3rem; max-width: 700px; margin: auto; opacity: 0.85;">
+      Tune into the heart of Italy with our hand-picked live radio streams.
+      Discover music, culture, and classic vibes — from Rome to Sicily.
+    </p>
+  </div>
+  
   <div *ngIf="nowPlaying" class="alert alert-success mt-4">
     ▶️ Now Playing: {{ nowPlaying }}
   </div>

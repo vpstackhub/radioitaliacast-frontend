@@ -36,21 +36,24 @@ export class StationCardComponent implements OnInit, OnDestroy {
       this.audio = new Audio(this.station.streamUrl);
       this.audio.volume = this.volume;
     }
-
+  
     if (this.isPlaying) {
       this.audio.pause();
       clearInterval(this.vuInterval);
+      console.log('⏸️ Paused:', this.station.name);
     } else {
       this.audio.play();
-      this.playEvent.emit(this.station.name);
-
+      console.log('▶️ Playing:', this.station.name);
+      this.playEvent.emit(this.station.name);  
+  
       this.vuInterval = setInterval(() => {
         this.generateVuLevels();
       }, 200);
     }
-
+  
     this.isPlaying = !this.isPlaying;
   }
+  
 
   generateVuLevels() {
     this.vuLevelLeft = Math.floor(30 + Math.random() * 70);

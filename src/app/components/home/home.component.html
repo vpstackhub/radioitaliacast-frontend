@@ -1,14 +1,15 @@
 <div class="container d-flex justify-content-center align-items-center mt-5">
   <div
-    style="
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      padding: 2rem 3rem;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-      max-width: 800px;
-      text-align: center;
-    "
+  style="
+  background: linear-gradient(135deg, #2f80ed, #56ccf2);  /* Modern blue gradient */
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 2rem 3rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  max-width: 800px;
+  text-align: center;
+"
+
     class="text-white"
   >
     <h1 style="font-size: 3rem; font-weight: bold;">
@@ -21,9 +22,12 @@
   </div>
 </div>
 
-<div *ngIf="nowPlaying" class="alert alert-success mt-4">
-  ▶️ Now Playing: {{ nowPlaying }}
+<div class="d-flex justify-content-center mt-4">
+  <div class="alert alert-success text-center w-auto px-4 py-2">
+    ▶️ Now Playing: {{ nowPlaying }}
+  </div>
 </div>
+
 
 <div class="row mt-4">
   <div

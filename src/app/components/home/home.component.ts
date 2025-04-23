@@ -19,8 +19,10 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.stationService.getStations().subscribe((data: any[]) => {
       this.stations = data;
+      console.log("✅ STATIONS LOADED:", this.stations);  
     });
   }
+  
 
   updateNowPlaying(stationName: string) {
     this.nowPlaying = stationName;

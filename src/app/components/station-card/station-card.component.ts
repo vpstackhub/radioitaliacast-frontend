@@ -21,8 +21,7 @@ export class StationCardComponent implements OnInit, OnDestroy {
   volume = 0.5;
   hls: Hls | null = null;
 
-  vuLevelLeft: number = 0;
-  vuLevelRight: number = 0;
+  vuLevel: number = 0;
   vuInterval: any;
 
   ngOnInit(): void {
@@ -30,20 +29,21 @@ export class StationCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-  if (this.hls) {
-    this.hls.destroy();
-    this.hls = null;
+  this.hls?.destroy();
+  this.hls = null;
+  if (this.audio) {
+    this.audio.pause();
+    this.audio = null;
   }
   clearInterval(this.vuInterval);
 }
 
-  togglePlay() {
+togglePlay() {
+  // Stop playback if already playing
   if (this.isPlaying) {
-    if (this.audio) this.audio.pause();
-    if (this.hls) {
-      this.hls.destroy();
-      this.hls = null;
-    }
+    this.audio?.pause();
+    this.hls?.destroy();
+    this.hls = null;
     clearInterval(this.vuInterval);
     this.isPlaying = false;
     return;
@@ -51,31 +51,45 @@ export class StationCardComponent implements OnInit, OnDestroy {
 
   const isM3u8 = this.station.streamUrl.endsWith('.m3u8');
 
+  // Create audio element only once
+  if (!this.audio) {
+    this.audio = document.createElement('audio');
+    this.audio.volume = this.volume;
+  }
+
   if (isM3u8 && Hls.isSupported()) {
-    const audio = document.createElement('audio');
+    // Destroy any existing HLS instance
+    if (this.hls) {
+      this.hls.destroy();
+    }
+
     this.hls = new Hls();
     this.hls.loadSource(this.station.streamUrl);
-    this.hls.attachMedia(audio);
-    audio.volume = this.volume;
-    audio.play();
-    this.audio = audio;
+    this.hls.attachMedia(this.audio);
+
+    this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      this.audio?.play().catch(err => {
+        console.error('🔴 Playback failed:', err);
+      });
+    });
+
   } else {
-    this.audio = new Audio(this.station.streamUrl);
-    this.audio.volume = this.volume;
-    this.audio.play();
+    // Fallback for MP3/OGG
+    this.audio.src = this.station.streamUrl;
+    this.audio.load();
+    this.audio.play().catch(err => {
+      console.error('🔴 Playback failed:', err);
+    });
   }
 
   this.playEvent.emit(this.station.name);
-  this.vuInterval = setInterval(() => this.generateVuLevels(), 200);
+  this.vuInterval = setInterval(() => this.generateVuLevel(), 200);
   this.isPlaying = true;
 }
 
-  
-
-  generateVuLevels() {
-    this.vuLevelLeft = Math.floor(30 + Math.random() * 70);
-    this.vuLevelRight = Math.floor(30 + Math.random() * 70);
-  }
+  generateVuLevel() {
+  this.vuLevel = Math.floor(30 + Math.random() * 70);
+}
 
   toggleSwitch() {
     this.isToggled = !this.isToggled;

@@ -39,7 +39,6 @@ export class StationCardComponent implements OnInit, OnDestroy {
 }
 
 togglePlay() {
-  // Stop playback if already playing
   if (this.isPlaying) {
     this.audio?.pause();
     this.hls?.destroy();
@@ -51,40 +50,41 @@ togglePlay() {
 
   const isM3u8 = this.station.streamUrl.endsWith('.m3u8');
 
-  // Create audio element only once
   if (!this.audio) {
     this.audio = document.createElement('audio');
     this.audio.volume = this.volume;
+    this.audio.controls = false;
   }
 
   if (isM3u8 && Hls.isSupported()) {
-    // Destroy any existing HLS instance
     if (this.hls) {
       this.hls.destroy();
     }
 
     this.hls = new Hls();
-    this.hls.loadSource(this.station.streamUrl);
     this.hls.attachMedia(this.audio);
+    this.hls.loadSource(this.station.streamUrl);
 
     this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
-      this.audio?.play().catch(err => {
-        console.error('🔴 Playback failed:', err);
+      this.audio?.play().then(() => {
+        this.isPlaying = true;
+        this.playEvent.emit(this.station.name);
+        this.vuInterval = setInterval(() => this.generateVuLevels(), 200);
+      }).catch(err => {
+        console.error('🔴 HLS playback failed:', err);
       });
     });
-
   } else {
-    // Fallback for MP3/OGG
     this.audio.src = this.station.streamUrl;
     this.audio.load();
-    this.audio.play().catch(err => {
-      console.error('🔴 Playback failed:', err);
+    this.audio.play().then(() => {
+      this.isPlaying = true;
+      this.playEvent.emit(this.station.name);
+      this.vuInterval = setInterval(() => this.generateVuLevels(), 200);
+    }).catch(err => {
+      console.error('🔴 MP3 playback failed:', err);
     });
   }
-
-  this.playEvent.emit(this.station.name);
-  this.vuInterval = setInterval(() => this.generateVuLevel(), 200);
-  this.isPlaying = true;
 }
 
   generateVuLevel() {

@@ -69,7 +69,7 @@ togglePlay() {
       this.audio?.play().then(() => {
         this.isPlaying = true;
         this.playEvent.emit(this.station.name);
-        this.vuInterval = setInterval(() => this.generateVuLevels(), 200);
+        this.vuInterval = setInterval(() => this.generateVuLevel(), 200);
       }).catch(err => {
         console.error('🔴 HLS playback failed:', err);
       });
@@ -80,7 +80,7 @@ togglePlay() {
     this.audio.play().then(() => {
       this.isPlaying = true;
       this.playEvent.emit(this.station.name);
-      this.vuInterval = setInterval(() => this.generateVuLevels(), 200);
+      this.vuInterval = setInterval(() => this.generateVuLevel(), 200);
     }).catch(err => {
       console.error('🔴 MP3 playback failed:', err);
     });

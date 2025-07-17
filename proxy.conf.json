@@ -1,0 +1,11 @@
+{
+  "/proxy": {
+    "target": "https://icecast.deejay.it",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/proxy": ""
+    }
+  }
+}

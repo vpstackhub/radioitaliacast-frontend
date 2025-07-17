@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import Hls from 'hls.js';
 
 @Component({
   selector: 'app-station-card',
@@ -18,6 +19,7 @@ export class StationCardComponent implements OnInit, OnDestroy {
   logoSrc: string = '';
   isToggled = false;
   volume = 0.5;
+  hls: Hls | null = null;
 
   vuLevelLeft: number = 0;
   vuLevelRight: number = 0;
@@ -28,31 +30,46 @@ export class StationCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.vuInterval);
+  if (this.hls) {
+    this.hls.destroy();
+    this.hls = null;
   }
+  clearInterval(this.vuInterval);
+}
 
   togglePlay() {
-    if (!this.audio) {
-      this.audio = new Audio(this.station.streamUrl);
-      this.audio.volume = this.volume;
+  if (this.isPlaying) {
+    if (this.audio) this.audio.pause();
+    if (this.hls) {
+      this.hls.destroy();
+      this.hls = null;
     }
-  
-    if (this.isPlaying) {
-      this.audio.pause();
-      clearInterval(this.vuInterval);
-      console.log('⏸️ Paused:', this.station.name);
-    } else {
-      this.audio.play();
-      console.log('▶️ Playing:', this.station.name);
-      this.playEvent.emit(this.station.name);  
-  
-      this.vuInterval = setInterval(() => {
-        this.generateVuLevels();
-      }, 200);
-    }
-  
-    this.isPlaying = !this.isPlaying;
+    clearInterval(this.vuInterval);
+    this.isPlaying = false;
+    return;
   }
+
+  const isM3u8 = this.station.streamUrl.endsWith('.m3u8');
+
+  if (isM3u8 && Hls.isSupported()) {
+    const audio = document.createElement('audio');
+    this.hls = new Hls();
+    this.hls.loadSource(this.station.streamUrl);
+    this.hls.attachMedia(audio);
+    audio.volume = this.volume;
+    audio.play();
+    this.audio = audio;
+  } else {
+    this.audio = new Audio(this.station.streamUrl);
+    this.audio.volume = this.volume;
+    this.audio.play();
+  }
+
+  this.playEvent.emit(this.station.name);
+  this.vuInterval = setInterval(() => this.generateVuLevels(), 200);
+  this.isPlaying = true;
+}
+
   
 
   generateVuLevels() {

@@ -38,6 +38,10 @@ export class StationCardComponent implements OnInit, OnDestroy {
   clearInterval(this.vuInterval);
 }
 
+private needsProxy(url: string): boolean {
+  return url.includes('unitedradio.it') || url.includes('radiomontecarlo.net');
+}
+
 togglePlay() {
   if (this.isPlaying) {
     this.audio?.pause();
@@ -47,6 +51,8 @@ togglePlay() {
     this.isPlaying = false;
     return;
   }
+
+  console.log('🎧 Attempting to play:', this.station.name, this.station.streamUrl);
 
   const isM3u8 = this.station.streamUrl.endsWith('.m3u8');
 
@@ -75,7 +81,17 @@ togglePlay() {
       });
     });
   } else {
-    this.audio.src = this.station.streamUrl;
+// ✅ Step 1: Check if proxy is needed
+const needsProxy = this.station.streamUrl.includes('unitedradio.it') ||
+                   this.station.streamUrl.includes('radiomontecarlo.net');
+
+// ✅ Step 2: Set the actual stream URL
+const streamUrl = needsProxy
+  ? `http://localhost:3000/proxy?url=${encodeURIComponent(this.station.streamUrl)}`
+  : this.station.streamUrl;
+
+// ✅ Step 3: Apply it to the audio
+this.audio.src = streamUrl;
     this.audio.load();
     this.audio.play().then(() => {
       this.isPlaying = true;

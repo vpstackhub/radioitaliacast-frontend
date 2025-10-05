@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angu
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import Hls from 'hls.js';
+import { environment } from '../../../environments/environment'; 
 
 @Component({
   selector: 'app-station-card',
@@ -85,10 +86,10 @@ togglePlay() {
 const needsProxy = this.station.streamUrl.includes('unitedradio.it') ||
                    this.station.streamUrl.includes('radiomontecarlo.net');
 
-// ✅ Step 2: Set the actual stream URL
 const streamUrl = needsProxy
-  ? `http://localhost:3000/proxy?url=${encodeURIComponent(this.station.streamUrl)}`
+  ? `${environment.apiUrl}/proxy?url=${encodeURIComponent(this.station.streamUrl)}`
   : this.station.streamUrl;
+
 
 // ✅ Step 3: Apply it to the audio
 this.audio.src = streamUrl;

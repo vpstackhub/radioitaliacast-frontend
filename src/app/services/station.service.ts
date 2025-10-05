@@ -9,6 +9,6 @@ export class StationService {
   constructor(private http: HttpClient) {}
 
   getStations() {
-    return this.http.get<any[]>(`${environment.apiUrl}/api/stations`);
+    return this.http.get<any[]>(`${environment.apiUrl}/stations`);
   }  
 }
